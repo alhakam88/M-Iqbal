@@ -1,0 +1,72 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+homeassistant:
+  name: Alhakam_Home
+  unit_system: metric
+  currency: MYR
+  time_zone: "Asia/Kuala_Lumpur"
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# Example configuration.yaml entry
+     
+utility_meter:
+  total_water_usage_hourly:
+    source: sensor.total_water_usagee
+    cycle: hourly
+  total_water_usage_daily:
+    source: sensor.total_water_usage
+    cycle: daily
+  total_water_usage_weekly:
+    source: sensor.total_water_usage
+    cycle: weekly
+  total_water_usage_monthly:
+    source: sensor.total_water_usage
+    cycle: monthly
+
+  monthly_energy:
+    source: sensor.energy
+    cycle: monthly
+    tariffs:
+      - bawah_200kwh
+      - atas_200kwh
+      - atas_300kwh
+      - atas_600kwh
+      - atas_900kwh
+    offset:
+      days: 13
+     
+
+  current_monthly_energy:
+    source: sensor.energy
+    cycle: monthly
+    offset:
+      days: 13
+
+fastdotcom:
+  scan_interval:
+      minutes: 5
+
+influxdb:
+  host: a0d7b954-influxdb
+  port: 8086
+  database: homeassistant
+  username: atgasrgwa
+  password: afgasgwg
+  max_retries: 3
+  default_measurement: state
+
+sonoff:
+  username: alhakamgedzer@gmail.com
+  password: aeggargbr
+  force_update: [power]
+  scan_interval: '00:01:00'  # (optional) default 5 minutes
+  sensors: [power, current, voltage]
