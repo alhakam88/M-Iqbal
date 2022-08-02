@@ -1,0 +1,51 @@
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /config
+      - type: memory_free
+     
+  - platform: integration
+    source: sensor.sonoff_10007c8f55_power
+    name: energy_aircond_bilik_tidur
+    unit_prefix: k
+    round: 2
+   
+  - platform: integration
+    source: sensor.sonoff_10007c8f56_power
+    name: energy_aircond_ruang_tamu
+    unit_prefix: k
+    round: 2
+   
+  - platform: integration
+    source: sensor.sonoff_10012d7aec_power
+    name: energy_aircond_bilik_study
+    unit_prefix: k
+    round: 2
+
+  - platform: integration
+    source: sensor.sonoff_10012d7b92_power
+    name: energy_tv_ruang_tamu
+    unit_prefix: k
+    round: 2
+   
+  - platform: integration
+    source: sensor.meter_air
+    name: water_volume_used
+    round: 2
+
+  - platform: template
+    sensors:
+     harga_tarif:
+      value_template: >-
+        {% if is_state('utility_meter.monthly_energy', 'bawah_200kwh') %}
+            {{ 0.218 }}
+        {% elif is_state('utility_meter.monthly_energy', 'atas_200kwh') %}
+            {{ 0.334 }}
+        {% elif is_state('utility_meter.monthly_energy', 'atas_300kwh') %}
+            {{ 0.516 }}
+        {% elif is_state('utility_meter.monthly_energy', 'atas_600kwh') %}
+            {{ 0.546 }}  
+        {% elif is_state('utility_meter.monthly_energy', 'atas_900kwh') %}
+            {{ 0.571 }}                
+        {% endif %}    
+      unit_of_measurement: 'MYR/kWh'
